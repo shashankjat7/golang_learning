@@ -4,10 +4,10 @@ import "time"
 
 type Event struct {
 	Id          string    `json:"id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Location    string    `json:"location"`
-	StartTime   time.Time `json:"start_time"`
+	Title       string    `json:"title" binding:"required"`
+	Description string    `json:"description" binding:"required"`
+	Location    string    `json:"location" binding:"required"`
+	StartTime   time.Time `json:"start_time" binding:"required"`
 	CreatedBy   string    `json:"created_by"`
 }
 
@@ -15,6 +15,11 @@ type Event struct {
 var events = []Event{}
 
 // function to save an event and add it to the event list
-func (e Event) save() {
+func (e Event) Save() {
 	events = append(events, e)
+}
+
+// retrieve all events
+func GetAllEvents() []Event {
+	return events
 }
