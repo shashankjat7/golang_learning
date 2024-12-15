@@ -13,7 +13,7 @@ var DB *sql.DB
 // initialize the database
 func InitDB() {
 	var err error
-	DB, err := sql.Open("sqlite3", "api.db")
+	DB, err = sql.Open("sqlite3", "api.db")
 
 	if err != nil {
 		panic("Could not connect to database")
@@ -30,13 +30,13 @@ func InitDB() {
 
 func createTables() {
 	createEventsTableQuery := `
-	CRREATE TABLE IF NOT EXISTS events (
-		id TEXT PRIMARY KEY AUTOINCREMENT
+	CREATE TABLE IF NOT EXISTS events (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		title TEXT NOT NULL,
 		description TEXT NOT NULL,
 		location TEXT NOT NULL,
 		start_time DATETIME NOT NULL,
-		created_by TEXT NOT NULL
+		created_by INTEGER NOTb NULL
 	)
 	`
 	_, err := DB.Exec(createEventsTableQuery)
