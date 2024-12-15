@@ -33,6 +33,7 @@ func (e Event) Save() error {
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
 
 	// execute the statement
 	result, err := stmt.Exec(e.Title, e.Description, e.Location, e.StartTime, e.CreatedBy)
@@ -48,7 +49,27 @@ func (e Event) Save() error {
 
 }
 
-// retrieve all events
-func GetAllEvents() []Event {
-	return events
+// retrieve all events from the database
+func GetAllEvents() ([]Event, error) {
+	query := "SELECT * FROM events"
+
+	/// DB.Query is uesd when fetching data from database
+	rows, err := db.DB.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var events []Event
+	// loop through all the rows to get populate the events list
+	for rows.Next() {
+		var event Event
+		err := rows.Scan(&event.Id, &event.Title, &event.Description, &event.Location, &event.StartTime, &event.CreatedBy)
+		if err != nil {
+			return nil, err
+		}
+		events = append(events, event)
+	}
+	return events, nil
 }
