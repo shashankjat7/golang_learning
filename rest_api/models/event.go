@@ -102,3 +102,14 @@ func (event Event) UpdateEvent() error {
 	_, err = stmt.Exec(event.Title, event.Description, event.Location, event.StartTime, event.CreatedBy, event.Id)
 	return err
 }
+
+func DeleteEvent(eventId int64) (int64, error) {
+	query := `
+		DELETE FROM events WHERE id = ?
+	`
+	result, err := db.DB.Exec(query, eventId)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
+}
